@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOM Elements Practicum</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background: #f2f4f8;
+margin: 0;
+padding: 20px;
+}
+.container {
+max-width: 520px;
+margin: 0 auto;
+}
+h1 {
+text-align: center;
+color: #283593;
+}
+.card {
+background: #ffffff;
+padding: 20px;
+margin-bottom: 20px;
+border-radius: 8px;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+label {
+display: block;
+margin-top: 10px;
+}
+input, select {
+width: 100%;
+padding: 8px;
+margin: 6px 0 12px 0;
+box-sizing: border-box;
+}
+button {
+padding: 8px 14px;
+margin-right: 6px;
+border: none;
+border-radius: 4px;
+background: #3949ab;
+color: #ffffff;
+cursor: pointer;
+}
+button:hover {
+background: #283593;
+}
+.output {
+margin-top: 12px;
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1 id="pageTitle">DOM Elements Demo</h1>
+
+<div class="card">
+<h2>Interactive Form</h2>
+<form id="userForm">
+<label for="nameInput">Name</label>
+<input type="text" id="nameInput" placeholder="Enter your name">
+<label for="colorSelect">Greeting colour</label>
+<select id="colorSelect">
+<option value="green">Green</option>
+<option value="blue">Blue</option>
+<option value="purple">Purple</option>
+</select>
+<button type="button" id="greetBtn" onclick="showGreeting()">Greet</button>
+<button type="button" id="resetBtn" onclick="resetForm()">Reset</button>
+</form>
+<p id="greetingOutput" class="output"></p>
+</div>
+
+<div class="card">
+<h2>setTimeout / clearTimeout</h2>
+<button type="button" id="startDelayBtn" onclick="startDelay()">Start Delay</button>
+<button type="button" id="cancelDelayBtn" onclick="cancelDelay()">Cancel Delay</button>
+<p id="delayOutput" class="output"></p>
+</div>
+
+<div class="card">
+<h2>setInterval / clearInterval</h2>
+<button type="button" id="startTimerBtn" onclick="startTimer()">Start</button>
+<button type="button" id="stopTimerBtn" onclick="stopTimer()">Stop</button>
+<button type="button" id="resetTimerBtn" onclick="resetTimer()">Reset</button>
+<p id="timerOutput" class="output">Seconds: 0</p>
+</div>
+</div>
+
+<script>
+let delayId = null;
+let timerId = null;
+let seconds = 0;
+
+function showGreeting() {
+const name = document.querySelector("#nameInput").value.trim();
+const color = document.querySelector("#colorSelect").value;
+const output = document.querySelector("#greetingOutput");
+if (name === "") {
+output.textContent = "Please enter your name.";
+output.style.color = "red";
+return;
+}
+output.textContent = "Hello, " + name + "!";
+output.style.color = color;
+}
+
+function resetForm() {
+document.querySelector("#userForm").reset();
+document.querySelector("#greetingOutput").textContent = "";
+}
+
+function startDelay() {
+const output = document.querySelector("#delayOutput");
+if (delayId !== null) {
+clearTimeout(delayId);
+}
+output.textContent = "Message will appear in 3 seconds...";
+delayId = setTimeout(function () {
+output.textContent = "Timeout finished: Hello after 3 seconds!";
+delayId = null;
+}, 3000);
+}
+
+function cancelDelay() {
+const output = document.querySelector("#delayOutput");
+if (delayId !== null) {
+clearTimeout(delayId);
+delayId = null;
+output.textContent = "Timeout cancelled.";
+}
+}
+
+function startTimer() {
+if (timerId !== null) {
+return;
+}
+timerId = setInterval(function () {
+seconds++;
+document.querySelector("#timerOutput").textContent = "Seconds: " + seconds;
+}, 1000);
+}
+
+function stopTimer() {
+clearInterval(timerId);
+timerId = null;
+}
+
+function resetTimer() {
+stopTimer();
+seconds = 0;
+document.querySelector("#timerOutput").textContent = "Seconds: 0";
+}
+</script>
+</body>
+</html>
